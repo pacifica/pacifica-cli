@@ -1,8 +1,12 @@
+sudo: required
 services:
  - postgresql
  - mysql
  - elasticsearch
- - redis-server
+ - rabbitmq
+language: python
+python:
+ - 2.7
 
 addons:
   apt:
@@ -11,10 +15,6 @@ addons:
     packages:
       - elasticsearch
       - oracle-java8-set-default
-
-language: python
-python:
- - 2.7
 
 matrix:
   include:
