@@ -2,7 +2,7 @@
 """Test the methods module for things we need to test."""
 from unittest import TestCase
 from ConfigParser import ConfigParser
-from uploader_cli.methods import generate_requests_auth
+from uploader_cli.methods import generate_requests_auth, verify_type
 
 
 class config_client(object):
@@ -15,6 +15,8 @@ class config_client(object):
     def __enter__(self):
         """Create a config parser object with appropriate values."""
         config = ConfigParser()
+        config.add_section('endpoints')
+        config.set('endpoints', 'ca_bundle', 'True')
         config.add_section('authentication')
         config.set('authentication', 'type', self.auth_type)
         config.set('authentication', 'username', 'username')
@@ -38,7 +40,20 @@ class TestMethods(TestCase):
             self.assertTrue('cert' in generate_requests_auth(conf))
             self.assertEqual(generate_requests_auth(conf)['cert'][0], 'cert')
             self.assertTrue(generate_requests_auth(conf)['cert'][1], 'key')
+            self.assertTrue(generate_requests_auth(conf)['verify'], 'True')
         with config_client('basic') as conf:
             self.assertTrue('auth' in generate_requests_auth(conf))
             self.assertTrue(generate_requests_auth(conf)['auth'][0], 'username')
             self.assertTrue(generate_requests_auth(conf)['auth'], 'password')
+
+    def test_verify_type(self):
+        """Test the verify_type method to cover everything."""
+        self.assertEqual(verify_type('True'), True)
+        self.assertEqual(verify_type('False'), False)
+        self.assertEqual(verify_type('/etc/hosts'), '/etc/hosts')
+        hit_exception = False
+        try:
+            verify_type('blarg')
+        except ValueError:
+            hit_exception = True
+        self.assertTrue(hit_exception)
