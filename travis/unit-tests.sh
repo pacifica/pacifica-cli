@@ -39,21 +39,21 @@ printf '\n\n\n\n' | coverage run --include='uploader_cli/*,CLIUploader.py' -a CL
 printf '8192\n\n\n\n\n' | coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --dry-run --interactive --logon dmlb2001
 curl -X POST -H 'content-type: application/json' 'localhost:8121/users?_id=11' -d'{ "network_id": "'`whoami`'"}'
 # this will fail...
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose debug upload --dry-run --instrument 54 || true
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --dry-run --instrument 54 || true
 coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --dry-run --instrument 9876 || true
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload --dry-run --logon dmlb2001 --proposal-regex 'expired closed and end'
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --dry-run --logon dmlb2001 --proposal-regex 'expired closed and end'
 
 ############################
 # Upload commands
 ############################
 curl -X POST -H 'content-type: application/json' 'localhost:8121/users?_id=10' -d'{ "network_id": "'`whoami`'"}'
 curl -X POST -H 'content-type: application/json' 'localhost:8121/users?_id=11' -d'{ "network_id": "someoneelse"}'
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload README.md
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload travis
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload --tar-in-tar README.md
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload --local-save retry.tar README.md
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload --local-retry retry.tar
-coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py --verbose=debug upload --nowait README.md
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload README.md
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload travis
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --tar-in-tar README.md
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --local-save retry.tar README.md
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --local-retry retry.tar
+coverage run --include='uploader_cli/*,CLIUploader.py' -a CLIUploader.py upload --nowait README.md
 
 ############################
 # PyTest coverage

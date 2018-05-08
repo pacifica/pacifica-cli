@@ -3,12 +3,15 @@
 """Methods for the sub commands to run."""
 from __future__ import absolute_import, print_function
 import logging
-from ConfigParser import ConfigParser
+try:  # try loading python 2 module first
+    from ConfigParser import ConfigParser
+except ImportError:  # pragma: no cover python 3
+    from configparser import ConfigParser
 from getpass import getuser
 from os import environ
 from os.path import isfile
-from uploader.Uploader import LOGGER as UP_LOGGER
-from uploader.metadata.PolicyQuery import LOGGER as PQ_LOGGER
+from uploader.uploader import LOGGER as UP_LOGGER
+from uploader.metadata.policyquery import LOGGER as PQ_LOGGER
 from uploader.metadata import MetaUpdate
 from .configure import configure_url_endpoints, configure_auth, configure_ca_bundle
 from .query import query_main
@@ -58,11 +61,11 @@ def generate_global_config():
                    'https://policy.example.com/uploader')
     global_ini.set('endpoints', 'ca_bundle', 'True')
     global_ini.add_section('authentication')
-    global_ini.set('authentication', 'type', None)
-    global_ini.set('authentication', 'username', None)
-    global_ini.set('authentication', 'password', None)
-    global_ini.set('authentication', 'cert', None)
-    global_ini.set('authentication', 'key', None)
+    global_ini.set('authentication', 'type', '')
+    global_ini.set('authentication', 'username', '')
+    global_ini.set('authentication', 'password', '')
+    global_ini.set('authentication', 'cert', '')
+    global_ini.set('authentication', 'key', '')
     LOGGER.debug('System Config: %s', system_config)
     LOGGER.debug('User Config: %s', user_config)
     if isfile(system_config):

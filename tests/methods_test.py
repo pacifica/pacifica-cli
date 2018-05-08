@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 """Test the methods module for things we need to test."""
 from unittest import TestCase
-from ConfigParser import ConfigParser
+try:  # python 2 import
+    from ConfigParser import ConfigParser
+except ImportError:  # pragma: no cover python 3 import
+    from configparser import ConfigParser
 from uploader_cli.methods import generate_requests_auth, verify_type
 
 
@@ -55,7 +58,7 @@ class TestMethods(TestCase):
         """Test the verify_type method to cover everything."""
         self.assertEqual(verify_type('True'), True)
         self.assertEqual(verify_type('False'), False)
-        self.assertEqual(verify_type('/etc/hosts'), '/etc/hosts')
+        self.assertEqual(verify_type('README.md'), 'README.md')
         hit_exception = False
         try:
             verify_type('blarg')
